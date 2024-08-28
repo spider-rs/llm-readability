@@ -88,11 +88,16 @@ where
 <meta name="disabled-adaptations" content="watch">
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <meta name="viewport" content="initial-scale=1">
-<base href="http://localhost:3000/web-crawling-and-scraping">
-<title>{title}</title>
+<base href="{url}">
+{}
 <script>window.isReaderPage = true;</script>
 </head><body>
-"#
+"#,
+        if title.is_empty() {
+            "".into()
+        } else {
+            format!("<title>{title}</title>")
+        }
     );
 
     let formatted_content = format!("{}{}</body></html>", html_content, content);

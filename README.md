@@ -26,4 +26,4 @@ fn main() {
 }
 ```
 
-This project is a rewrite of `readability-rs` for performance with major bug fixes.
+This project is a rewrite of `readability-rs` for performance and bug fixes.

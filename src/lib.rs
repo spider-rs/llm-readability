@@ -10,11 +10,11 @@ mod tests {
 
     #[test]
     fn test_html_readability() {
-        use maud::{DOCTYPE, html};
-    
+        use maud::{html, DOCTYPE};
+
         let page_title = "Readability Test";
         let page_h1 = "Reading is fun";
-    
+
         // Read the HTML file
         let markup = html! {
             (DOCTYPE)
@@ -27,7 +27,7 @@ mod tests {
             }
         }
         .into_string();
-    
+
         match extractor::extract(
             &mut markup.as_bytes(),
             &url::Url::parse("https://spider.cloud").unwrap(),
@@ -35,7 +35,9 @@ mod tests {
         ) {
             Ok(product) => {
                 assert!(
-                    product.content.contains(&format!("<title>{}</title>", page_title)),
+                    product
+                        .content
+                        .contains(&format!("<title>{}</title>", page_title)),
                     "Title is missing or incorrect"
                 );
                 assert!(
@@ -43,15 +45,12 @@ mod tests {
                     "H1 tag is missing or incorrect"
                 );
                 assert!(
-                    product
-                        .content
-                        .contains("The content is ready for reading"),
+                    product.content.contains("The content is ready for reading"),
                     "Expected phrase is missing"
                 );
                 println!("HTML content passed all checks.");
             }
             Err(_) => println!("error occured"),
         }
-    }    
+    }
 }
-

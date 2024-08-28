@@ -14,7 +14,7 @@ llm_readability = "0"
 use llm_readability::extractor;
 
 fn main() {
-  match extractor::extract("<html>...</html>", "https://example.com", None) {
+  match extractor::extract(&mut "<html>...</html>".as_bytes(), "https://example.com", None) {
       Ok(product) => {
           println!("------- html ------");
           println!("{}", product.content);

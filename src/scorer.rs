@@ -254,7 +254,7 @@ pub fn preprocess(dom: &mut RcDom, handle: &Handle, title: &mut String) -> bool 
         dom.remove_from_parent(node);
 
         if let Text { ref contents } = &node.data {
-            let text = contents.clone().into_inner();
+            let text = contents.take();
             dom.append(&p, NodeOrText::AppendText(text))
         }
     }

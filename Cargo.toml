@@ -1,0 +1,27 @@
+[package]
+name = "llm_readability"
+version = "0.0.1"
+edition = "2021"
+description = "Readability library for LLM's built in Rust"
+keywords = ["readability", "clean-html", "safari-reader"]
+authors = [
+    "j-mendez <jeff@a11ywatch.com>"
+]
+repository = "https://github.com/spider-rs/llm-readability"
+readme = "README.md"
+categories = ["web-programming", "command-line-utilities"]
+license = "MIT"
+documentation = "https://docs.rs/llm_readability"
+
+[dependencies]
+url = "2"
+markup5ever_rcdom = "0.3"
+lazy_static = "1"
+markup5ever = "0.13"
+html5ever = "0.27"
+regex = "1.10.6"
+encoding_rs = "0.8"
+bytes = "1"
+
+[dev-dependencies]
+maud = "0.26"

@@ -1,7 +1,7 @@
-# readability
+# llm_readability
 
-The Rust readability library build for performance, AI, and multiple locales.
-
+The Rust readability library built for performance, AI, and multiple locales.
+The library is used on [Spider Cloud](https://spider.cloud) for data cleaning.
 
 ## Usage
 

@@ -13,9 +13,9 @@ dependencies = [
 
 [[package]]
 name = "auto_encoder"
-version = "0.1.3"
+version = "0.1.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "b93aa0d8be11e4f851d490713457f332421143e3cdf53244203608864015733c"
+checksum = "8cfd944c56af79853532412fe19a63faa0cca5e0872ce3de7970dd28fd63dcc1"
 dependencies = [
  "chardetng",
  "encoding_rs",
@@ -142,7 +142,7 @@ checksum = "d8adc4bb1803a324070e64a98ae98f38934d91957a99cfb3a43dcbc01bc56439"
 
 [[package]]
 name = "llm_readability"
-version = "0.0.9"
+version = "0.0.10"
 dependencies = [
  "auto_encoder",
  "html5ever",

@@ -1,6 +1,6 @@
 [package]
 name = "llm_readability"
-version = "0.0.9"
+version = "0.0.10"
 edition = "2021"
 description = "Readability library for LLM's built in Rust"
 keywords = ["readability", "clean-html", "safari-reader"]

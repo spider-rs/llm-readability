@@ -1,5 +1,4 @@
 use super::dom;
-use super::encoded_html::get_html_encoded;
 use super::error::Error;
 use super::scorer;
 use html5ever::tendril::stream::TendrilSink;
@@ -21,7 +20,7 @@ pub struct Product {
 }
 
 /// Readability alg extract a website url.
-pub fn extract<R>(input: &mut R, url: &Url, label: &Option<String>) -> Result<Product, Error>
+pub fn extract<R>(input: &mut R, url: &Url, lang: &Option<String>) -> Result<Product, Error>
 where
     R: Read,
 {
@@ -67,15 +66,14 @@ where
     )
     .ok();
 
-    let content = match label {
+    let content = match lang {
         Some(r) => {
             if bytes.is_empty() {
                 Default::default()
             } else if r.is_empty() {
                 String::from_utf8(bytes).unwrap_or_default()
             } else {
-                let b = Some(bytes::Bytes::from(bytes));
-                get_html_encoded(&b, r)
+                auto_encoder::encode_bytes_from_language(bytes.as_slice(), r)
             }
         }
         _ => String::from_utf8(bytes).unwrap_or_default(),
@@ -84,7 +82,7 @@ where
     dom::extract_text(&node, &mut text, true);
 
     let html_content = format!(
-        r#"<html class="paper"><head>
+        r#"<html class="paper"{}><head>
 <meta name="disabled-adaptations" content="watch">
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <meta name="viewport" content="initial-scale=1">
@@ -93,6 +91,12 @@ where
 <script>window.isReaderPage = true;</script>
 </head><body>
 "#,
+        match lang {
+            Some(l) => format!(r#" lang="{}"#, &l),
+            _ => {
+                "".into()
+            }
+        },
         if title.is_empty() {
             "".into()
         } else {

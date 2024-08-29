@@ -1,5 +1,4 @@
 pub mod dom;
-pub mod encoded_html;
 pub mod error;
 pub mod extractor;
 pub mod scorer;
@@ -15,7 +14,6 @@ mod tests {
         let page_title = "Readability Test";
         let page_h1 = "Reading is fun";
 
-        // Read the HTML file
         let markup = html! {
             (DOCTYPE)
             meta charset="utf-8";

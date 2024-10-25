@@ -16,12 +16,14 @@ mod tests {
 
         let markup = html! {
             (DOCTYPE)
-            meta charset="utf-8";
-            title { (page_title) }
-            h1 { (page_h1) }
-            a href="spider.cloud";
-            pre {
-                r#"The content is ready for reading"#
+            html lang="fr" {
+                meta charset="utf-8";
+                title { (page_title) }
+                h1 { (page_h1) }
+                a href="spider.cloud";
+                pre {
+                    r#"The content is ready for reading"#
+                }
             }
         }
         .into_string();
@@ -29,7 +31,6 @@ mod tests {
         match extractor::extract(
             &mut markup.as_bytes(),
             &url::Url::parse("https://spider.cloud").unwrap(),
-            &None,
         ) {
             Ok(product) => {
                 assert!(
@@ -46,7 +47,12 @@ mod tests {
                     product.content.contains("The content is ready for reading"),
                     "Expected phrase is missing"
                 );
-                println!("HTML content passed all checks.");
+                assert!(
+                    product
+                        .content
+                        .contains(&r###"<html class="paper" lang="fr">"###),
+                    "Html lang is missing or incorrect"
+                );
             }
             Err(_) => println!("error occured"),
         }

@@ -186,7 +186,7 @@ pub fn get_class_weight(handle: &Handle) -> f32 {
 }
 
 /// Pre-process handle dom adjusting.
-pub fn preprocess(dom: &mut RcDom, handle: &Handle, title: &mut String) -> bool {
+pub fn preprocess(dom: &mut RcDom, handle: &Handle, title: &mut String, lang: &mut String) -> bool {
     if let Element {
         ref name,
         ref attrs,
@@ -200,6 +200,13 @@ pub fn preprocess(dom: &mut RcDom, handle: &Handle, title: &mut String) -> bool 
             "title" => {
                 if title.is_empty() {
                     dom::extract_text(&handle, title, true);
+                }
+            }
+            "html" => {
+                if let Some(val) = dom::attr("lang", &attrs.borrow()) {
+                    if lang.is_empty() {
+                        *lang = val;
+                    }
                 }
             }
             _ => (),
@@ -219,7 +226,7 @@ pub fn preprocess(dom: &mut RcDom, handle: &Handle, title: &mut String) -> bool 
     let mut br_count = 0;
 
     for child in handle.children.borrow().iter() {
-        if preprocess(dom, &child, title) {
+        if preprocess(dom, &child, title, lang) {
             useless_nodes.push(child.clone());
         }
 

@@ -20,7 +20,7 @@ pub struct Product {
 }
 
 /// Readability alg extract a website url.
-pub fn extract<R>(input: &mut R, url: &Url, lang: &Option<String>) -> Result<Product, Error>
+pub fn extract<R>(input: &mut R, url: &Url) -> Result<Product, Error>
 where
     R: Read,
 {
@@ -34,10 +34,11 @@ where
     let mut bytes = vec![];
     let mut text: String = String::new();
     let mut title: String = String::new();
+    let mut lang: String = String::new();
 
     let handle = dom.document.clone();
 
-    scorer::preprocess(&mut dom, &handle, &mut title);
+    scorer::preprocess(&mut dom, &handle, &mut title, &mut lang);
     scorer::find_candidates(Path::new(id), &handle, &mut candidates, &mut nodes);
 
     let mut top_candidate: &scorer::Candidate = &scorer::Candidate {
@@ -66,18 +67,7 @@ where
     )
     .ok();
 
-    let content = match lang {
-        Some(r) => {
-            if bytes.is_empty() {
-                Default::default()
-            } else if r.is_empty() {
-                String::from_utf8(bytes).unwrap_or_default()
-            } else {
-                auto_encoder::encode_bytes_from_language(bytes.as_slice(), r)
-            }
-        }
-        _ => String::from_utf8(bytes).unwrap_or_default(),
-    };
+    let content = auto_encoder::auto_encode_bytes(bytes.as_slice());
 
     dom::extract_text(&node, &mut text, true);
 
@@ -91,11 +81,10 @@ where
 <script>window.isReaderPage = true;</script>
 </head><body>
 "#,
-        match lang {
-            Some(l) => format!(r#" lang="{}"#, &l),
-            _ => {
-                "".into()
-            }
+        if !lang.is_empty() {
+            format!(r#" lang="{}""#, &lang)
+        } else {
+            "".into()
         },
         if title.is_empty() {
             "".into()
